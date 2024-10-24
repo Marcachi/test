@@ -32,6 +32,8 @@ runs:
     - name: Test Sentry config file
       shell: bash
       run: 'ls -al apps/odalys-v4 && cat $SENTRY_CONFIG_FILE'
+      env:
+        SENTRY_CONFIG_FILE: ${{ inputs.SENTRY_CONFIG_FILE }}
 
     # - name: Get branch/tag name
     #   shell: bash
