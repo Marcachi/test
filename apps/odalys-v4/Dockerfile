@@ -10,15 +10,15 @@ WORKDIR /app
 
 COPY . .
 
-RUN ls -al apps/odalys-v4
+RUN cat apps/odalys-v4/.sentryclirc
 
 # RUN turbo prune odalys-v4 --docker
-COPY apps/odalys-v4/.sentryclirc apps/odalys-v4/.sentryclirc
-
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
 
 WORKDIR /app
+
+COPY --from=builder apps/odalys-v4/.sentryclirc apps/odalys-v4
 
 RUN cat apps/odalys-v4/.sentryclirc
 
