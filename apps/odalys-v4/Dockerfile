@@ -7,7 +7,11 @@ FROM base AS builder
 WORKDIR /app
 # RUN npm config set registry https://registry.npmjs.org/
 # RUN npm install -g turbo@1.12.5
+
 COPY . .
+
+RUN ls -al apps/odalys-v4
+
 # RUN turbo prune odalys-v4 --docker
 COPY apps/odalys-v4/.sentryclirc apps/odalys-v4/.sentryclirc
 
