@@ -20,6 +20,7 @@ WORKDIR /app
 
 # COPY --from=builder apps/odalys-v4/.sentryclirc apps/odalys-v4
 
+COPY apps/odalys-v4/.sentryclirc apps/odalys-v4/.sentryclirc
 RUN cat apps/odalys-v4/.sentryclirc
 
 # First install the dependencies (as they change less often)
