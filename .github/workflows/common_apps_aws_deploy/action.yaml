@@ -67,6 +67,6 @@ runs:
       with:
         # ssh: |
         #   default=${{ env.SSH_AUTH_SOCK }}
-        # context: .
+        context: .
         file: ./apps/odalys-v4/Dockerfile
         # push: true
