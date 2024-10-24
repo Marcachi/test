@@ -60,18 +60,11 @@ runs:
     #     ssh-agent -a $SSH_AUTH_SOCK > /dev/null
     #     ssh-add - <<< "${{ inputs.SSH_DESIGN_SYSTEM_PRIVATE_KEY }}"
 
-    # - name: Build and push with cache
-    #   uses: docker/build-push-action@v5
-    #   env:
-    #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-    #   with:
-    #     ssh: |
-    #       default=${{ env.SSH_AUTH_SOCK }}
-    #     context: .
-    #     file: ./apps/${{ inputs.APP_NAME }}/Dockerfile
-    #     push: true
-    #     tags: |
-    #       ${{ steps.login-ecr.outputs.registry }}/${{ inputs.ECR_REPO }}:${{ github.sha }}
-    #       ${{ steps.login-ecr.outputs.registry }}/${{ inputs.ECR_REPO }}:latest
-    #     build-args: |
-    #       DOTENV_FILE=${{ inputs.DOTENV_FILE }}
+    - name: Build and push with cache
+      uses: docker/build-push-action@v5
+      with:
+        # ssh: |
+        #   default=${{ env.SSH_AUTH_SOCK }}
+        # context: .
+        file: ./apps/odalys-v4/Dockerfile
+        # push: true
