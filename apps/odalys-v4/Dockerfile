@@ -18,7 +18,7 @@ FROM base AS installer
 
 WORKDIR /app
 
-COPY --from=builder apps/odalys-v4/.sentryclirc apps/odalys-v4
+# COPY --from=builder apps/odalys-v4/.sentryclirc apps/odalys-v4
 
 RUN cat apps/odalys-v4/.sentryclirc
 
