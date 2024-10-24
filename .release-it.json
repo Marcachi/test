@@ -1,0 +1,30 @@
+{
+  "git": {
+    "commitMessage": "chore(release): v${version}",
+    "addUntrackedFiles": true,
+    "tag": true,
+    "commit": true,
+    "push": true,
+    "commitArgs": ["--no-verify"],
+    "requireUpstream": false
+  },
+  "hooks": {
+    "before:init": "npm test",
+    "after:bump": ["npm run dist", "npm run coverage:badge"]
+  },
+  "github": {
+    "release": true
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog",
+      "preset": {
+        "name": "conventionalcommits"
+      }
+    }
+  }
+}
