@@ -29,9 +29,9 @@ runs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
-    - name: Test setup Sentry config file
+    - name: Test Sentry config file
       shell: bash
-      run: 'ls -al apps/odalys-v4 && echo $SENTRY_CONFIG_FILE'
+      run: 'ls -al apps/odalys-v4 && cat $SENTRY_CONFIG_FILE'
 
     # - name: Get branch/tag name
     #   shell: bash
