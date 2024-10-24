@@ -1,0 +1,32 @@
+name: Start AWS pipeline
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+      #- 'releases/**'
+      #- main
+    paths:
+      # - apps/odalys-v4/**
+      # - packages/design-system/**
+      - .github/workflows/apps_v4_deploy.yaml
+  workflow_dispatch: ~
+
+jobs:
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: 🚚 Récupération du code source
+        uses: actions/checkout@v4
+
+      - name: Include common deploy steps
+        uses: ./.github/workflows/common_apps_aws_deploy
+        with:
+          SENTRY_CONFIG_FILE: apps/odalys-v4/.sentryclirc
+          SENTRY_CONFIG_VALUE: ${{ secrets.SENTRY_CONFIG_ODALYS_V4 }}

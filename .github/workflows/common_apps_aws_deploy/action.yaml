@@ -1,0 +1,75 @@
+name: "Common steps for AWS deployments"
+description: "Common deployment steps to be included in real v4 deployment workflows"
+inputs:
+  SENTRY_CONFIG_FILE:
+    required: false
+  SENTRY_CONFIG_VALUE:
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Deployment details
+      shell: bash
+      run: echo "Pipeline run by ${GITHUB_EVENT_NAME} on ${GITHUB_REF_TYPE} ${{ github.ref_name }} with following input Environment $ENVIRONMENT"
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Sentry config file
+      shell: bash
+      if: ${{ inputs.SENTRY_CONFIG_VALUE != '' && inputs.SENTRY_CONFIG_FILE != '' }}
+      run: 'echo "$SENTRY_CONFIG_VALUE" > $SENTRY_CONFIG_FILE'
+      env:
+        SENTRY_CONFIG_VALUE: ${{ inputs.SENTRY_CONFIG_VALUE }}
+        SENTRY_CONFIG_FILE: ${{ inputs.SENTRY_CONFIG_FILE }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Test setup Sentry config file
+      shell: bash
+      run: 'echo $SENTRY_CONFIG_FILE'
+
+    # - name: Get branch/tag name
+    #   shell: bash
+    #   id: branch_tag_name
+    #   run: echo "branch_or_tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     role-to-assume: "${{ inputs.AWS_ROLE_ARN }}"
+    #     aws-region: "${{ inputs.AWS_REGION }}"
+
+    # - name: Login to Amazon ECR
+    #   id: login-ecr
+    #   uses: aws-actions/amazon-ecr-login@v2
+    #   with:
+    #     mask-password: "true"
+
+    # - name: Setup SSH Keys and known_hosts
+    #   shell: bash
+    #   env:
+    #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+    #   run: |
+    #     ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+    #     ssh-add - <<< "${{ inputs.SSH_DESIGN_SYSTEM_PRIVATE_KEY }}"
+
+    # - name: Build and push with cache
+    #   uses: docker/build-push-action@v5
+    #   env:
+    #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+    #   with:
+    #     ssh: |
+    #       default=${{ env.SSH_AUTH_SOCK }}
+    #     context: .
+    #     file: ./apps/${{ inputs.APP_NAME }}/Dockerfile
+    #     push: true
+    #     tags: |
+    #       ${{ steps.login-ecr.outputs.registry }}/${{ inputs.ECR_REPO }}:${{ github.sha }}
+    #       ${{ steps.login-ecr.outputs.registry }}/${{ inputs.ECR_REPO }}:latest
+    #     build-args: |
+    #       DOTENV_FILE=${{ inputs.DOTENV_FILE }}
