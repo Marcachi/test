@@ -11,8 +11,8 @@ on:
       # - apps/odalys-v4/**
       # - packages/design-system/**
       - .github/workflows/apps_v4_deploy.yaml
+      - .github/workflows/common_app_aws_deploy/action.yaml
   workflow_dispatch: ~
-
 
 jobs:
   deploy:

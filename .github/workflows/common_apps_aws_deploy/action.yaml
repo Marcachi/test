@@ -21,7 +21,7 @@ runs:
     - name: Setup Sentry config file
       shell: bash
       if: ${{ inputs.SENTRY_CONFIG_VALUE != '' && inputs.SENTRY_CONFIG_FILE != '' }}
-      run: 'echo "$SENTRY_CONFIG_VALUE" > $SENTRY_CONFIG_FILE'
+      run: 'printf "%s" "$SENTRY_CONFIG_VALUE" > $SENTRY_CONFIG_FILE'
       env:
         SENTRY_CONFIG_VALUE: ${{ inputs.SENTRY_CONFIG_VALUE }}
         SENTRY_CONFIG_FILE: ${{ inputs.SENTRY_CONFIG_FILE }}
